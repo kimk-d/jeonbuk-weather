@@ -15,10 +15,10 @@ STN_DICT = {'전주': '146', '군산': '140', '부안': '243', '임실': '244',
             '정읍': '245', '남원': '247', '장수': '248', '순창': '254', '고창': '251'}
 
 st.set_page_config(
-    page_title="전북 농업기상 시스템",
+    page_title="전북특별자치도 농업기술원 기상시스템",
+    page_icon="https://www.jeonbuk.go.kr/images/common/logo_img.png",
     layout="wide",
     initial_sidebar_state="expanded"
-)
 
 
 # [데이터 보정] 시간별 데이터를 가져와서 일별 데이터를 정확히 보정하는 함수
@@ -140,7 +140,11 @@ def get_weather_data(tm1, tm2):
     return local_df
 
 # UI 부분
-st.title("🌾 전북특별자치도 농업기술원 기상 시스템")
+col1, col2 = st.columns([0.1, 0.9])
+with col1:
+    st.image("https://www.jeonbuk.go.kr/images/common/logo_img.png", width=70)
+with col2:
+    st.title("전북특별자치도 농업기술원 기상 시스템")
 
 # [시스템 UI 설정] 영문 툴바 제거 및 요일 한글화
 st.markdown("""
