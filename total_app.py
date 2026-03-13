@@ -140,6 +140,7 @@ def get_weather_data(tm1, tm2):
     return local_df
 
 # UI 부분
+
 col1, col2 = st.columns([0.1, 0.9])
 with col1:
     st.image("https://www.jeonbuk.go.kr/images/common/logo_img.png", width=70)
