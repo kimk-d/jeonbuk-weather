@@ -16,7 +16,7 @@ STN_DICT = {'전주': '146', '군산': '140', '부안': '243', '임실': '244',
 
 st.set_page_config(
     page_title="전북특별자치도 농업기술원 기상시스템",
-    page_icon="https://www.jeonbuk.go.kr/images/common/logo_img.png",
+    page_icon="https://www.jeonbuk.go.kr/static/common/img/common/logo.png", # 공식 로고 경로로 변경
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -143,7 +143,7 @@ def get_weather_data(tm1, tm2):
 
 col1, col2 = st.columns([0.1, 0.9])
 with col1:
-    st.image("https://www.jeonbuk.go.kr/images/common/logo_img.png", width=70)
+    st.image("https://www.jeonbuk.go.kr/static/common/img/common/logo.png", width=200)
 with col2:
     st.title("전북특별자치도 농업기술원 기상 시스템")
 
