@@ -254,12 +254,10 @@ if start_date <= end_date:
 else:
     st.error("종료일이 시작일보다 빠를 수 없습니다.")
 
-st.markdown("---")
-with st.sidebar:
-    st.markdown("---")
-    # 연구원님의 실제 깃허브 주소입니다!
-    github_url = "https://github.com/kimk-d/jeonbuk-weather"
-    st.link_button("📂 GitHub 저장소 방문", github_url, width='stretch')
-    st.info(" 소스코드 수정 및 버전 관리는 깃허브에서 가능합니다.")
+
 
 st.caption("ⓒ 2026 전북특별자치도 농업기술원 | 자료출처: 기상청 오픈 API")
+
+
+
+
