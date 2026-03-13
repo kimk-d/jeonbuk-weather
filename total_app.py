@@ -16,7 +16,7 @@ STN_DICT = {'전주': '146', '군산': '140', '부안': '243', '임실': '244',
 
 st.set_page_config(
     page_title="전북특별자치도 농업기술원 기상시스템",
-    page_icon="logo", # 파일명을 직접 써주세요!
+    page_icon="logo.png", # 파일명을 직접 써주세요!
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -144,7 +144,7 @@ def get_weather_data(tm1, tm2):
 
 col1, col2 = st.columns([0.3, 0.7]) # 로고가 가로로 기니까 공간을 좀 더 줬습니다.
 with col1:
-    st.image("logo") # 쌀 아이콘 대신 진짜 로고가 들어갑니다!
+    st.image("logo.png") # 쌀 아이콘 대신 진짜 로고가 들어갑니다!
 with col2:
     st.markdown("<h1 style='margin-top: 10px;'>기상 분석 시스템</h1>", unsafe_allow_html=True)
 
