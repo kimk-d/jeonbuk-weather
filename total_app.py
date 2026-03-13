@@ -19,7 +19,7 @@ st.set_page_config(
     page_icon="https://www.jeonbuk.go.kr/images/common/logo_img.png",
     layout="wide",
     initial_sidebar_state="expanded"
-
+)
 
 # [데이터 보정] 시간별 데이터를 가져와서 일별 데이터를 정확히 보정하는 함수
 def get_hourly_filling_mean(target_date, stn_id):
