@@ -16,7 +16,7 @@ STN_DICT = {'전주': '146', '군산': '140', '부안': '243', '임실': '244',
 
 st.set_page_config(
     page_title="전북특별자치도 농업기술원 기상시스템",
-    page_icon="https://www.jeonbuk.go.kr/static/common/img/common/logo.png", # 공식 로고 경로로 변경
+    page_icon="logo.png", # 파일명을 직접 써주세요!
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -141,11 +141,11 @@ def get_weather_data(tm1, tm2):
 
 # UI 부분
 
-col1, col2 = st.columns([0.1, 0.9])
+col1, col2 = st.columns([0.3, 0.7]) # 로고가 가로로 기니까 공간을 좀 더 줬습니다.
 with col1:
-    st.image("https://www.jeonbuk.go.kr/static/common/img/common/logo.png", width=200)
+    st.image("logo.png") # 쌀 아이콘 대신 진짜 로고가 들어갑니다!
 with col2:
-    st.title("전북특별자치도 농업기술원 기상 시스템")
+    st.markdown("<h1 style='margin-top: 10px;'>기상 분석 시스템</h1>", unsafe_allow_html=True)
 
 # [시스템 UI 설정] 영문 툴바 제거 및 요일 한글화
 st.markdown("""
