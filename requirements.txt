@@ -4,3 +4,4 @@ plotly
 requests
 scipy
 statsmodels
+xlsxwriter
