@@ -155,20 +155,21 @@ st.markdown("""
     /* 1. 기본 툴바 제거 */
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
 
-    /* 2. 달력 요일 한글화 */
+    /* 2. 달력 요일 한글화 (위치 정확히 고정) */
     div[data-baseweb="calendar"] [role="columnheader"] {
         font-size: 0 !important;
         position: relative !important;
+        height: 30px !important;
     }
     div[data-baseweb="calendar"] [role="columnheader"]::after {
-        font-size: 0.9rem !important;
+        font-size: 0.85rem !important;
         font-weight: bold !important;
         visibility: visible !important;
         position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
     }
-    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(1)::after { content: "일"; color: red !important; }
+    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(1)::after { content: "일"; color: #FF4B4B !important; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(2)::after { content: "월"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(3)::after { content: "화"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(4)::after { content: "수"; color: white; }
@@ -176,27 +177,32 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 3. 메트릭 카드 전체 높이 고정 및 레이아웃 */
+    /* 3. 메트릭 카드 디자인 및 높이 고정 */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
         padding: 15px !important;
         border-radius: 12px;
         min-height: 140px !important;
+        box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
     }
 
-    /* 4. [핵심] 부호만 투명하게 만들기 (글자 길이에 무관) */
-    /* 델타 텍스트의 첫 글자(부호)만 투명 색상으로 지정합니다 */
+    /* 4. [핵심] 부호만 투명화 (숫자 안 밀림!) */
+    /* 델타 텍스트 컨테이너 */
     [data-testid="stMetricDelta"] > div {
-        color: inherit !important;
-    }
-    [data-testid="stMetricDelta"] > div::first-letter {
-        color: transparent !important;
-        font-size: 0 !important; /* 공간도 거의 차지하지 않게 처리 */
+        display: flex !important;
+        align-items: center !important;
     }
 
-    /* 화살표 위치 정렬 */
+    /* 첫 글자(부호)만 투명하게 숨기고 크기를 0으로 제어 */
+    [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] p::first-letter {
+        color: transparent !important;
+        font-size: 0 !important;
+    }
+
+    /* 화살표 아이콘은 그대로 표시 */
     [data-testid="stMetricDelta"] svg {
+        margin-right: 2px !important;
         vertical-align: middle !important;
     }
     </style>
