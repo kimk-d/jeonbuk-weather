@@ -247,31 +247,70 @@ if start_date <= end_date:
                     fig5.update_xaxes(tickformat="%Y-%m-%d")
                     st.plotly_chart(fig5, use_container_width=True)
 
-                st.markdown(f"### 📋 {sel[0]} 등 선택 지역 요약 (평균)")
+                st.markdown(f"### 📋 {', '.join(sel)} 지역 요약 및 전년 대비 비교")
 
-                # 수치 계산 (선택된 지역 전체 데이터 대상)
-                avg_temp = v_df['평균기온(℃)'].mean()
-                max_temp = v_df['최고기온(℃)'].max()
-                min_temp = v_df['최저기온(℃)'].min()
-                sum_rain = v_df['강수량(mm)'].sum()
-                avg_hum = v_df['평균습도(%)'].mean()
+                # 1. 올해 데이터 계산 (현재 조회된 v_df 기준)
+                cur_avg_temp = v_df['평균기온(℃)'].mean()
+                cur_max_temp = v_df['최고기온(℃)'].max()
+                cur_min_temp = v_df['최저기온(℃)'].min()
+                cur_avg_hum = v_df['평균습도(%)'].mean()
+                cur_sum_sun = v_df['일조시간합(hr)'].sum()
+                cur_sum_rain = v_df['강수량(mm)'].sum()
 
-                # 카드 레이아웃 배치
-                m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
+                # 2. 작년 데이터 가져오기 (비교용)
+                last_start = start_date - timedelta(days=365)
+                last_end = end_date - timedelta(days=365)
+
+                # 작년 데이터 로드 (캐시 활용됨)
+                last_df_raw = get_weather_data(last_start.strftime('%Y%m%d'), last_end.strftime('%Y%m%d'))
+
+                if last_df_raw is not None and not last_df_raw.empty:
+                    # 선택된 지역만 필터링
+                    last_v_df = last_df_raw[last_df_raw['지역'].isin(sel)]
+
+                    # 작년 평균치 계산
+                    last_avg_temp = last_v_df['평균기온'].mean()
+                    last_avg_hum = last_v_df['평균습도'].mean()
+                    last_sum_sun = last_v_df['일조시간'].sum()
+                    last_sum_rain = last_v_df['강수량'].sum()
+
+                    # 대비값 계산 (올해 - 작년)
+                    diff_temp = cur_avg_temp - last_avg_temp
+                    diff_hum = cur_avg_hum - last_avg_hum
+                    diff_sun = cur_sum_sun - last_sum_sun
+                    diff_rain = cur_sum_rain - last_sum_rain
+                else:
+                    diff_temp = diff_hum = diff_sun = diff_rain = None
+
+                # 3. 카드 레이아웃 배치
+                m_col1, m_col2, m_col3, m_col4, m_col5, m_col6 = st.columns(6)
+
+
+                def format_diff(val, unit):
+                    if val is None: return "데이터 없음"
+                    sign = "+" if val > 0 else ""
+                    return f"{sign}{val:.1f} {unit}"
+
 
                 with m_col1:
-                    st.metric("평균 기온", f"{avg_temp:.1f} ℃")
+                    st.metric("평균기온", f"{cur_avg_temp:.1f} ℃",
+                              delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
                 with m_col2:
-                    st.metric("최고 기온(최대)", f"{max_temp:.1f} ℃", delta=f"{max_temp - avg_temp:.1f} ℃",
-                              delta_color="inverse")
+                    st.metric("최고기온(최대)", f"{cur_max_temp:.1f} ℃")
                 with m_col3:
-                    st.metric("최저 기온(최소)", f"{min_temp:.1f} ℃")
+                    st.metric("최저기온(최소)", f"{cur_min_temp:.1f} ℃")
                 with m_col4:
-                    st.metric("누적 강수량", f"{sum_rain:.1f} mm")
+                    st.metric("평균습도", f"{cur_avg_hum:.1f} %",
+                              delta=format_diff(diff_hum, "%") if diff_hum is not None else None)
                 with m_col5:
-                    st.metric("평균 습도", f"{avg_hum:.1f} %")
+                    st.metric("일조시간합", f"{cur_sum_sun:.1f} hr",
+                              delta=format_diff(diff_sun, "hr") if diff_sun is not None else None)
+                with m_col6:
+                    st.metric("누적강수량", f"{cur_sum_rain:.1f} mm",
+                              delta=format_diff(diff_rain, "mm") if diff_rain is not None else None)
 
-                st.markdown("---")  # 구분선
+                st.markdown("---")
+
                 # 상세 표 출력
                 st.dataframe(
                     v_df.sort_values(['관측날짜', '지역명'], ascending=[False, True]),
