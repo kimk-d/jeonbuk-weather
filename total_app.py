@@ -185,7 +185,7 @@ st.markdown("""
     /* 델타 텍스트 컨테이너 내의 텍스트에서 첫 글자만 투명하게 */
     [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::first-letter {
         color: rgba(0,0,0,0) !important; /* 완전 투명 */
-        margin-right: -0.4em !important; /* 부호가 차지하던 자리를 살짝 당겨서 자연스럽게 연결 */
+        margin-right: -0.2em !important; /* 부호가 차지하던 자리를 살짝 당겨서 자연스럽게 연결 */
     }
 
     /* 화살표 아이콘은 건드리지 않음 */
