@@ -17,7 +17,7 @@ STN_DICT = {'전주': '146', '군산': '140', '부안': '243', '임실': '244',
 
 st.set_page_config(
     page_title="전북특별자치도 농업기술원 기상시스템",
-    page_icon="logo.png", # 파일명을 직접 써주세요!
+    page_icon="logo1.png", # 파일명을 직접 써주세요!
     layout="wide",
     initial_sidebar_state="expanded"
 )
