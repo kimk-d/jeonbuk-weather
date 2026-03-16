@@ -21,6 +21,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+#시간별 자료
 # [데이터 보정] 시간별 데이터를 가져와서 일별 데이터를 정확히 보정하는 함수
 def get_hourly_filling_mean(target_date, stn_id):
     url = f"https://apihub.kma.go.kr/api/typ01/url/kma_sfctm3.php?tm1={target_date}0000&tm2={target_date}2300&stn={stn_id}&authKey={AUTH_KEY}&help=0"
@@ -63,7 +64,7 @@ def get_hourly_filling_mean(target_date, stn_id):
     except:
         return None
 
-
+# 일별 자료
 @st.cache_data(ttl=3600)
 def get_weather_data(tm1, tm2):
     local_df = pd.read_csv(CACHE_FILE) if os.path.exists(CACHE_FILE) else pd.DataFrame()
