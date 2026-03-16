@@ -287,7 +287,7 @@ if start_date <= end_date:
                                         <div style="display: inline-flex; align-items: center; justify-content: center; padding: 8px 20px; 
                                                     background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 10px; cursor: pointer;">
                                             <img src="data:image/png;base64,{img_base64}" width="25" style="margin-right: 10px;">
-                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">데이터 저장 (차트 포함)</span>
+                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">데이터 저장</span>
                                         </div>
                                     </a>
                                 '''
