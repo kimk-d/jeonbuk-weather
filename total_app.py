@@ -295,9 +295,9 @@ if start_date <= end_date:
 
 
                 def format_diff(val, unit):
-                    if val is None or pd.isna(val): return None  # 데이터 없으면 delta 표시 안함
-                    sign = "+" if val > 0 else ""
-                    return f"{sign}{val:.1f} {unit}"
+                    if val is None or pd.isna(val): return None
+                    # abs()를 사용해 부호를 제거하고 숫자만 표시합니다. ㅋ
+                    return f"{abs(val):.1f} {unit}"
 
 
                 # 작년 대비 계산 (최고/최저 평균 기준)
@@ -310,23 +310,24 @@ if start_date <= end_date:
                     diff_max = diff_min = None
 
                 with m_col1:
+                    # delta에 원래의 diff_temp 값을 그대로 넘겨줘야 스트림릿이 화살표 방향과 색깔을 정합니다!
                     st.metric("평균기온", f"{cur_avg_temp:.1f} ℃",
-                              delta=format_diff(diff_temp, "℃"))
+                              delta=format_diff(diff_temp, "℃"), delta_color="normal")
                 with m_col2:
                     st.metric("최고기온(평균)", f"{cur_avg_max:.1f} ℃",
-                              delta=format_diff(diff_max, "℃"))
+                              delta=format_diff(diff_max, "℃"), delta_color="normal")
                 with m_col3:
                     st.metric("최저기온(평균)", f"{cur_avg_min:.1f} ℃",
-                              delta=format_diff(diff_min, "℃"))
+                              delta=format_diff(diff_min, "℃"), delta_color="normal")
                 with m_col4:
                     st.metric("평균습도", f"{cur_avg_hum:.1f} %",
-                              delta=format_diff(diff_hum, "%"))
+                              delta=format_diff(diff_hum, "%"), delta_color="normal")
                 with m_col5:
                     st.metric("일조시간합", f"{cur_sum_sun:.1f} hr",
-                              delta=format_diff(diff_sun, "hr"))
+                              delta=format_diff(diff_sun, "hr"), delta_color="normal")
                 with m_col6:
                     st.metric("누적강수량", f"{cur_sum_rain:.1f} mm",
-                              delta=format_diff(diff_rain, "mm"))
+                              delta=format_diff(diff_rain, "mm"), delta_color="normal")
 
                 st.markdown("---")
 
