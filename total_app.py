@@ -7,7 +7,7 @@ import re
 import os
 import io
 import plotly.express as px
-
+import base64
 
 
 
@@ -209,15 +209,15 @@ if start_date <= end_date:
                 '최대풍속': '최대풍속(m/s)'
             })
 
-            st.markdown("### 📊 조회 대상 지역")
+            st.markdown("###  조회 대상 지역")
             sel = st.multiselect("조회할 지역을 선택하세요", list(STN_DICT.keys()), default=['전주', '군산'])
 
             if sel:
                 v_df = final_df[final_df['지역명'].isin(sel)]
-                st.subheader(f"📍 {start_date.date()} ~ {end_date.date()} 기상 분석 보고")
+                st.subheader(f" {start_date.date()} ~ {end_date.date()} 기상 분석 보고")
 
                 # 그래프
-                st.markdown("### 📈 항목별 그래프")
+                st.markdown("###  항목별 그래프")
                 tab1, tab2, tab3, tab4, tab5 = st.tabs(["평균기온", "최고기온", "최저기온", "일조시간", "강수량"])
 
                 with tab1:
@@ -252,12 +252,34 @@ if start_date <= end_date:
                 with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
                     v_df.to_excel(writer, index=False, sheet_name='기상데이터')
 
-                st.download_button(
-                    label="📥 데이터 저장 (Excel)",
-                    data=buffer.getvalue(),
-                    file_name=f"전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
+
+                    # 1. 엑셀 데이터 생성
+                    buffer = io.BytesIO()
+                    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+                        v_df.to_excel(writer, index=False, sheet_name='기상데이터')
+                    excel_data = buffer.getvalue()
+                    b64_excel = base64.b64encode(excel_data).decode()
+
+                    # 2. 직접 다운받으신 'excel_icon.png' 파일을 읽어서 버튼으로 만들기
+                    try:
+                        with open("excel.png", "rb") as f:
+                            img_base64 = base64.b64encode(f.read()).decode()
+
+                        # 3. 로고를 클릭하면 다운로드되는 HTML 생성
+                        # 이미지를 중앙 정렬하고 아래에 "Excel 저장" 문구를 넣었습니다.
+                        download_html = f'''
+                                        <div style="display: flex; flex-direction: column; align-items: center; width: 100px; margin-top: 20px;">
+                                            <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_excel}" 
+                                               download="전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx" 
+                                               style="text-decoration: none;">
+                                                <img src="data:image/png;base64,{img_base64}" width="60" style="cursor: pointer;" title="엑셀 파일 다운로드">
+                                            </a>
+                                            <p style="margin-top: 8px; font-weight: bold; color: #2e7d32; font-size: 13px; margin-bottom: 0;">Excel 저장</p>
+                                        </div>
+                                    '''
+                        st.markdown(download_html, unsafe_allow_html=True)
+
+
             else:
                 st.info("지역을 선택해 주세요.")
 else:
