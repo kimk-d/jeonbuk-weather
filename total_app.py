@@ -185,29 +185,25 @@ st.markdown("""
         min-height: 140px !important;
     }
 
-    /* 4. [해결] 부호가 있을 때만 가리고, 숫자는 절대 건드리지 않기 */
-    /* 델타 영역의 텍스트가 '+'나 '-'로 시작할 때만 첫 글자를 투명하게 합니다 */
+    /* 4. [완전해결] 부호 공간은 유지하되 색상만 투명화 */
     [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] p {
-        display: inline-block;
-    }
-
-    /* 음수(-)나 양수(+) 부호가 있는 경우만 콕 집어서 투명화 */
-    /* 스트림릿 버전에 따라 부호가 포함된 경우만 처리하도록 간격 조정 */
-    [data-testid="stMetricDelta"] svg + div {
         display: flex !important;
+        align-items: center !important;
+        letter-spacing: -0.5px; /* 숫자 간격 미세 조정 */
     }
 
-    /* 숫자가 잘리지 않도록 text-indent 대신 clipping 기법 사용 */
-    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p {
-        overflow: hidden;
-    }
-
-    /* 가장 확실한 방법: 부호 자체를 파이썬에서 제어하지 못하므로, 
-       CSS로 첫 글자가 부호인 경우만 크기를 줄입니다. */
-    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] > p::first-letter {
-        font-size: 0 !important;
+    /* 첫 글자(부호)의 색상만 투명하게 하고, 크기는 아주 작게 유지하여 잘림 방지 */
+    [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] p::first-letter {
         color: transparent !important;
-        margin-right: -2px !important;
+        font-size: 0.1px !important; /* 0이 아닌 최소값을 주어 레이아웃 붕괴 방지 */
+        margin-right: -4px !important; /* 부호가 차지하던 빈 공간만큼 숫자를 당김 */
+    }
+
+    /* 화살표 위치 정렬 */
+    [data-testid="stMetricDelta"] svg {
+        margin-right: 2px !important;
+        vertical-align: middle !important;
+        flex-shrink: 0;
     }
     </style>
     """, unsafe_allow_html=True)
