@@ -247,36 +247,43 @@ if start_date <= end_date:
                     hide_index=True
                 )
 
-                # 1. 엑셀 데이터 변환 및 동적 차트 생성
+                # 1. 엑셀 데이터 변환 및 5개 동적 차트 생성 (L열 배치)
                 excel_buffer = io.BytesIO()
                 with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
                     v_df.to_excel(writer, index=False, sheet_name='기상데이터')
 
                     workbook = writer.book
                     worksheet = writer.sheets['기상데이터']
-
-                    # 엑셀 내부에 차트 만들기 (평균기온 예시)
-                    chart = workbook.add_chart({'type': 'line'})
-
-                    # 데이터 범위 설정 (관측날짜와 평균기온 열 참조)
                     max_row = len(v_df)
-                    chart.add_series({
-                        'name': ['기상데이터', 0, 2],  # '평균기온' 컬럼명
-                        'categories': ['기상데이터', 1, 0, max_row, 0],  # 날짜 열
-                        'values': ['기상데이터', 1, 2, max_row, 2],  # 데이터 열
-                        'line': {'color': 'green'},
-                    })
 
-                    chart.set_title({'name': '일별 평균기온 추이 (데이터 수정 시 자동 반영)'})
-                    chart.set_x_axis({'name': '날짜'})
-                    chart.set_y_axis({'name': '기온(℃)'})
+                    # 차트 설정을 위한 리스트 (컬럼 인덱스: 2-평균, 3-최고, 4-최저, 6-일조, 7-강수)
+                    chart_info = [
+                        {'name': '평균기온(℃)', 'col': 2, 'type': 'line', 'color': 'green'},
+                        {'name': '최고기온(℃)', 'col': 3, 'type': 'line', 'color': 'red'},
+                        {'name': '최저기온(℃)', 'col': 4, 'type': 'line', 'color': 'blue'},
+                        {'name': '일조시간(hr)', 'col': 6, 'type': 'column', 'color': '#FFD700'},
+                        {'name': '강수량(mm)', 'col': 7, 'type': 'column', 'color': '#1E90FF'}
+                    ]
 
-                    # 차트를 엑셀 시트 J2 위치에 삽입
-                    worksheet.insert_chart('J2', chart)
+                    # 반복문을 돌면서 차트 5개를 생성하여 아래로 배치
+                    for i, info in enumerate(chart_info):
+                        chart = workbook.add_chart({'type': info['type']})
+                        chart.add_series({
+                            'name': ['기상데이터', 0, info['col']],
+                            'categories': ['기상데이터', 1, 0, max_row, 0],  # 날짜
+                            'values': ['기상데이터', 1, info['col'], max_row, info['col']],  # 데이터
+                            'line': {'color': info['color']} if info['type'] == 'line' else {},
+                            'fill': {'color': info['color']} if info['type'] == 'column' else {},
+                        })
+                        chart.set_title({'name': f"일별 {info['name']} 추이"})
+                        chart.set_size({'width': 750, 'height': 300})  # 가로를 살짝 더 늘렸습니다. ㅋ
+
+                        # L열(인덱스 11)부터 16행 간격으로 차트를 세로로 배치
+                        worksheet.insert_chart(1 + (i * 16), 11, chart)
 
                 b64_excel = base64.b64encode(excel_buffer.getvalue()).decode()
 
-                # 2. 아이콘 파일 읽기 및 버튼 출력 (연구원님 기존 버튼 디자인 유지)
+                # 2. 아이콘 파일 읽기 및 버튼 출력 (연구원님 전용 디자인)
                 with open("excel.png", "rb") as f:
                     img_base64 = base64.b64encode(f.read()).decode()
 
@@ -284,10 +291,11 @@ if start_date <= end_date:
                                     <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_excel}" 
                                        download="전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx" 
                                        style="text-decoration: none;">
-                                        <div style="display: inline-flex; align-items: center; justify-content: center; padding: 8px 20px; 
-                                                    background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 10px; cursor: pointer;">
-                                            <img src="data:image/png;base64,{img_base64}" width="25" style="margin-right: 10px;">
-                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">데이터 저장</span>
+                                        <div style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 25px; 
+                                                    background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; cursor: pointer; 
+                                                    box-shadow: 2px 2px 8px rgba(0,0,0,0.1); transition: 0.3s;">
+                                            <img src="data:image/png;base64,{img_base64}" width="28" style="margin-right: 12px;">
+                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">기상 종합 보고서 저장 (차트 5종)</span>
                                         </div>
                                     </a>
                                 '''
