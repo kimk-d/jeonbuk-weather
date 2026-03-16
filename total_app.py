@@ -9,6 +9,7 @@ import io
 import plotly.express as px
 
 
+
 CACHE_FILE = "weather_data_storage.csv"
 AUTH_KEY = st.secrets["KMA_AUTH_KEY"]
 STN_DICT = {'전주': '146', '군산': '140', '부안': '243', '임실': '244',
