@@ -247,7 +247,7 @@ if start_date <= end_date:
                     fig5.update_xaxes(tickformat="%Y-%m-%d")
                     st.plotly_chart(fig5, use_container_width=True)
 
-                st.markdown(f"### 📋 {', '.join(sel)} 지역 요약 및 전년 대비 비교")
+                st.markdown(f"###  {', '.join(sel)} 지역 요약 및 전년 대비 비교")
 
                 # 1. 올해 데이터 계산 (현재 조회된 v_df 기준)
                 cur_avg_temp = v_df['평균기온(℃)'].mean()
