@@ -257,29 +257,38 @@ if start_date <= end_date:
                 cur_sum_sun = v_df['일조시간합(hr)'].sum()
                 cur_sum_rain = v_df['강수량(mm)'].sum()
 
-                # 2. 작년 데이터 가져오기 (비교용)
-                last_start = start_date - timedelta(days=365)
-                last_end = end_date - timedelta(days=365)
+                # 2. 작년 동일 날짜 계산 (연도만 -1 처리)
+                try:
+                    # 정확히 연도만 1년 전으로 바꿈 (예: 2026-03-01 -> 2025-03-01)
+                    last_start = start_date.replace(year=start_date.year - 1)
+                    last_end = end_date.replace(year=end_date.year - 1)
 
-                # 작년 데이터 로드 (캐시 활용됨)
-                last_df_raw = get_weather_data(last_start.strftime('%Y%m%d'), last_end.strftime('%Y%m%d'))
+                    # 작년 데이터 로드
+                    last_df_raw = get_weather_data(last_start.strftime('%Y%m%d'), last_end.strftime('%Y%m%d'))
 
-                if last_df_raw is not None and not last_df_raw.empty:
-                    # 선택된 지역만 필터링
-                    last_v_df = last_df_raw[last_df_raw['지역'].isin(sel)]
+                    if last_df_raw is not None and not last_df_raw.empty:
+                        # 날짜형 변환 후 정확한 범위 필터링
+                        last_df_raw['날짜'] = pd.to_datetime(last_df_raw['날짜'])
+                        last_v_df = last_df_raw[
+                            (last_df_raw['지역'] == sel[0]) &  # 첫 번째 선택 지역 기준 (혹은 전체 평균)
+                            (last_df_raw['날짜'] >= last_start) &
+                            (last_df_raw['날짜'] <= last_end)
+                            ]
 
-                    # 작년 평균치 계산
-                    last_avg_temp = last_v_df['평균기온'].mean()
-                    last_avg_hum = last_v_df['평균습도'].mean()
-                    last_sum_sun = last_v_df['일조시간'].sum()
-                    last_sum_rain = last_v_df['강수량'].sum()
+                        # 작년 수치 계산 (컬럼명 주의: get_weather_data 리턴 기준)
+                        last_avg_temp = last_v_df['평균기온'].mean()
+                        last_avg_hum = last_v_df['평균습도'].mean()
+                        last_sum_sun = last_v_df['일조시간'].sum()
+                        last_sum_rain = last_v_df['강수량'].sum()
 
-                    # 대비값 계산 (올해 - 작년)
-                    diff_temp = cur_avg_temp - last_avg_temp
-                    diff_hum = cur_avg_hum - last_avg_hum
-                    diff_sun = cur_sum_sun - last_sum_sun
-                    diff_rain = cur_sum_rain - last_sum_rain
-                else:
+                        diff_temp = cur_avg_temp - last_avg_temp
+                        diff_hum = cur_avg_hum - last_avg_hum
+                        diff_sun = cur_sum_sun - last_sum_sun
+                        diff_rain = cur_sum_rain - last_sum_rain
+                    else:
+                        diff_temp = diff_hum = diff_sun = diff_rain = None
+                except Exception as e:
+                    # 윤년(2월 29일) 등 예외 발생 시 방어 로직
                     diff_temp = diff_hum = diff_sun = diff_rain = None
 
                 # 3. 카드 레이아웃 배치
