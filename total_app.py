@@ -295,7 +295,7 @@ if start_date <= end_date:
                                                     background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 12px; cursor: pointer; 
                                                     box-shadow: 2px 2px 8px rgba(0,0,0,0.1); transition: 0.3s;">
                                             <img src="data:image/png;base64,{img_base64}" width="28" style="margin-right: 12px;">
-                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">기상 종합 보고서 저장 (차트 5종)</span>
+                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">데이터 저장(Excel)</span>
                                         </div>
                                     </a>
                                 '''
