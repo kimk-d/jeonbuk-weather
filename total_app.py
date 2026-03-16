@@ -167,39 +167,21 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 2. 메트릭 카드 높이 통일 및 수직 중앙 정렬 */
-    [data-testid="stMetric"] {
-        background-color: #ffffff;
-        border: 1px solid #e0e0e0;
-        padding: 10px 15px !important;
-        border-radius: 12px;
-        height: 145px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-    }
-
-    /* 3. [핵심] 양수 빨강 / 음수 파랑 색깔 고정 */
-    /* 양수일 때 (Up 아이콘 포함된 영역) */
-    [data-testid="stMetricDelta"]:has(svg[data-testid="stMetricDeltaIcon-Up"]) {
-        color: #FF4B4B !important;
-    }
+    /* 2. 양수 빨강 / 음수 파랑 색깔만 변경 */
+    /* 양수 아이콘 및 텍스트 */
     [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Up"] {
         fill: #FF4B4B !important;
     }
-
-    /* 음수일 때 (Down 아이콘 포함된 영역) */
-    [data-testid="stMetricDelta"]:has(svg[data-testid="stMetricDeltaIcon-Down"]) {
-        color: #0068C9 !important;
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Up"] + div {
+        color: #FF4B4B !important;
     }
+
+    /* 음수 아이콘 및 텍스트 */
     [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Down"] {
         fill: #0068C9 !important;
     }
-
-    /* 델타 영역 내부 정렬 (부호 짤림 방지) */
-    [data-testid="stMetricDelta"] > div {
-        display: flex !important;
-        align-items: center !important;
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Down"] + div {
+        color: #0068C9 !important;
     }
     </style>
     """, unsafe_allow_html=True)
