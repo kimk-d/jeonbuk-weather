@@ -220,24 +220,34 @@ if start_date <= end_date:
                 st.markdown("###  항목별 그래프")
                 tab1, tab2, tab3, tab4, tab5 = st.tabs(["평균기온", "최고기온", "최저기온", "일조시간", "강수량"])
 
+                # 그래프 항목별 날짜 한글화 적용 버전
+                tab1, tab2, tab3, tab4, tab5 = st.tabs(["평균기온", "최고기온", "최저기온", "일조시간", "강수량"])
+
                 with tab1:
-                    st.line_chart(v_df, x='관측날짜', y='평균기온(℃)', color='지역명')
+                    fig1 = px.line(v_df, x='관측날짜', y='평균기온(℃)', color='지역명', title='일별 평균기온 추이')
+                    fig1.update_xaxes(tickformat="%Y-%m-%d")
+                    st.plotly_chart(fig1, use_container_width=True)
+
                 with tab2:
-                    st.line_chart(v_df, x='관측날짜', y='최고기온(℃)', color='지역명')
+                    fig2 = px.line(v_df, x='관측날짜', y='최고기온(℃)', color='지역명', title='일별 최고기온 추이')
+                    fig2.update_xaxes(tickformat="%Y-%m-%d")
+                    st.plotly_chart(fig2, use_container_width=True)
+
                 with tab3:
-                    st.line_chart(v_df, x='관측날짜', y='최저기온(℃)', color='지역명')
+                    fig3 = px.line(v_df, x='관측날짜', y='최저기온(℃)', color='지역명', title='일별 최저기온 추이')
+                    fig3.update_xaxes(tickformat="%Y-%m-%d")
+                    st.plotly_chart(fig3, use_container_width=True)
+
                 with tab4:
-                    # 일조시간 막대 그래프 (지역별로 옆으로 나란히)
                     fig4 = px.bar(v_df, x='관측날짜', y='일조시간합(hr)', color='지역명',
-                                  barmode='group',  # 이 설정이 막대기를 옆으로 나란히 세워줍니다!
-                                  title='지역별 일조시간 비교')
+                                  barmode='group', title='지역별 일조시간 비교')
+                    fig4.update_xaxes(tickformat="%Y-%m-%d")
                     st.plotly_chart(fig4, use_container_width=True)
 
                 with tab5:
-                    # 강수량 막대 그래프 (지역별로 옆으로 나란히)
                     fig5 = px.bar(v_df, x='관측날짜', y='강수량(mm)', color='지역명',
-                                  barmode='group',
-                                  title='지역별 강수량 비교')
+                                  barmode='group', title='지역별 강수량 비교')
+                    fig5.update_xaxes(tickformat="%Y-%m-%d")
                     st.plotly_chart(fig5, use_container_width=True)
 
                 # 상세 표 출력
