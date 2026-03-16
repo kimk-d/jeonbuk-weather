@@ -296,9 +296,11 @@ if start_date <= end_date:
                     st.metric("평균기온", f"{cur_avg_temp:.1f} ℃",
                               delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
                 with m_col2:
-                    st.metric("최고기온(최대)", f"{cur_max_temp:.1f} ℃")
+                    st.metric("최고기온(최대)", f"{cur_max_temp:.1f} ℃",
+                              delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
                 with m_col3:
-                    st.metric("최저기온(최소)", f"{cur_min_temp:.1f} ℃")
+                    st.metric("최저기온(최소)", f"{cur_min_temp:.1f} ℃",
+                              delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
                 with m_col4:
                     st.metric("평균습도", f"{cur_avg_hum:.1f} %",
                               delta=format_diff(diff_hum, "%") if diff_hum is not None else None)
