@@ -347,24 +347,27 @@ if start_date <= end_date:
                 # 출력부: delta에 수치(float)를 직접 넣으면 화살표가 자동 생성됩니다.
                 # delta_color="normal"이 기본이며, 양수 빨강/음수 파랑으로 작동합니다.
 
+                m_col1, m_col2, m_col3, m_col4, m_col5, m_col6 = st.columns(6)
+
+                # 출력부: :+.1f 를 사용하여 양수/음수 모두 부호를 강제로 표시합니다.
                 with m_col1:
                     st.metric("평균기온", f"{cur_avg_temp:.1f} ℃",
-                              delta=f"{diff_temp:.1f} ℃" if diff_temp is not None else None)
+                              delta=f"{diff_temp:+.1f} ℃" if diff_temp is not None else None)
                 with m_col2:
                     st.metric("최고기온(평균)", f"{cur_avg_max:.1f} ℃",
-                              delta=f"{diff_max:.1f} ℃" if diff_max is not None else None)
+                              delta=f"{diff_max:+.1f} ℃" if diff_max is not None else None)
                 with m_col3:
                     st.metric("최저기온(평균)", f"{cur_avg_min:.1f} ℃",
-                              delta=f"{diff_min:.1f} ℃" if diff_min is not None else None)
+                              delta=f"{diff_min:+.1f} ℃" if diff_min is not None else None)
                 with m_col4:
                     st.metric("평균습도", f"{cur_avg_hum:.1f} %",
-                              delta=f"{diff_hum:.1f} %" if diff_hum is not None else None)
+                              delta=f"{diff_hum:+.1f} %" if diff_hum is not None else None)
                 with m_col5:
                     st.metric("일조시간합", f"{cur_sum_sun:.1f} hr",
-                              delta=f"{diff_sun:.1f} hr" if diff_sun is not None else None)
+                              delta=f"{diff_sun:+.1f} hr" if diff_sun is not None else None)
                 with m_col6:
                     st.metric("누적강수량", f"{cur_sum_rain:.1f} mm",
-                              delta=f"{diff_rain:.1f} mm" if diff_rain is not None else None)
+                              delta=f"{diff_rain:+.1f} mm" if diff_rain is not None else None)
 
                 st.markdown("---")
 
