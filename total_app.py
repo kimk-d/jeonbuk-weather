@@ -168,23 +168,14 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
     div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p { display: none; }
 
-    /* --- 연구원님 요청: 높이 강제 고정 및 부호 제거 --- */
-    /* 1. 메트릭 컨테이너 전체 높이를 고정하여 위로 들리는 현상 방지 */
-    [data-testid="stMetric"] {
-        min-height: 120px !important; 
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
+    /* 추가: 숫자 앞의 부호(+, -) 숨기기 */
+    [data-testid="stMetricDelta"] svg + div::before { display: none !important; }
 
-    /* 2. delta 수치 앞의 +/- 기호 숨기기 */
-    [data-testid="stMetricDelta"] > div:first-child::before {
-        display: none !important;
-    }
-
-    /* 3. 화살표와 숫자 사이 간격 조정 */
-    [data-testid="stMetricDelta"] svg {
-        margin-right: -5px !important;
+    /* 추가: 모든 메트릭 카드의 높이를 강제로 똑같이 맞추기 */
+    [data-testid="stMetricDelta"] {
+        min-height: 25px !important;
+        display: flex !important;
+        align-items: center !important;
     }
     </style>
     """, unsafe_allow_html=True)
