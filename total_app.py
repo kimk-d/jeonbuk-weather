@@ -210,7 +210,7 @@ if start_date <= end_date:
             })
 
             st.markdown("###  조회 대상 지역")
-            sel = st.multiselect("조회할 지역을 선택하세요", list(STN_DICT.keys()), default=['전주', '군산'])
+            sel = st.multiselect("조회할 지역을 선택하세요", list(STN_DICT.keys()), default=['전주'])
 
             if sel:
                 v_df = final_df[final_df['지역명'].isin(sel)]
