@@ -316,22 +316,22 @@ if start_date <= end_date:
                 # delta_color="normal"이 기본이며, 양수 빨강/음수 파랑으로 작동합니다.
                 with m_col1:
                     st.metric("평균기온", f"{cur_avg_temp:.1f} ℃",
-                              delta=f"{diff_temp:.1f} ℃" if diff_temp is not None else None)
+                              delta=f"{abs(diff_temp):.1f} ℃" if diff_temp is not None else None)
                 with m_col2:
                     st.metric("최고기온(평균)", f"{cur_avg_max:.1f} ℃",
-                              delta=f"{diff_max:.1f} ℃" if diff_max is not None else None)
+                              delta=f"{abs(diff_max):.1f} ℃" if diff_max is not None else None)
                 with m_col3:
                     st.metric("최저기온(평균)", f"{cur_avg_min:.1f} ℃",
-                              delta=f"{diff_min:.1f} ℃" if diff_min is not None else None)
+                              delta=f"{abs(diff_min):.1f} ℃" if diff_min is not None else None)
                 with m_col4:
                     st.metric("평균습도", f"{cur_avg_hum:.1f} %",
-                              delta=f"{diff_hum:.1f} %" if diff_hum is not None else None)
+                              delta=f"{abs(diff_hum):.1f} %" if diff_hum is not None else None)
                 with m_col5:
                     st.metric("일조시간합", f"{cur_sum_sun:.1f} hr",
-                              delta=f"{diff_sun:.1f} hr" if diff_sun is not None else None)
+                              delta=f"{abs(diff_sun):.1f} hr" if diff_sun is not None else None)
                 with m_col6:
                     st.metric("누적강수량", f"{cur_sum_rain:.1f} mm",
-                              delta=f"{diff_rain:.1f} mm" if diff_rain is not None else None)
+                              delta=f"{abs(diff_rain):.1f} mm" if diff_rain is not None else None)
 
                 st.markdown("---")
 
