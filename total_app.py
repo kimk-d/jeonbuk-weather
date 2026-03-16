@@ -247,37 +247,47 @@ if start_date <= end_date:
                     hide_index=True
                 )
 
-
-                # 1. 엑셀 데이터 변환
+                # 1. 엑셀 데이터 변환 및 동적 차트 생성
                 excel_buffer = io.BytesIO()
                 with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
                     v_df.to_excel(writer, index=False, sheet_name='기상데이터')
+
+                    workbook = writer.book
+                    worksheet = writer.sheets['기상데이터']
+
+                    # 엑셀 내부에 차트 만들기 (평균기온 예시)
+                    chart = workbook.add_chart({'type': 'line'})
+
+                    # 데이터 범위 설정 (관측날짜와 평균기온 열 참조)
+                    max_row = len(v_df)
+                    chart.add_series({
+                        'name': ['기상데이터', 0, 2],  # '평균기온' 컬럼명
+                        'categories': ['기상데이터', 1, 0, max_row, 0],  # 날짜 열
+                        'values': ['기상데이터', 1, 2, max_row, 2],  # 데이터 열
+                        'line': {'color': 'green'},
+                    })
+
+                    chart.set_title({'name': '일별 평균기온 추이 (데이터 수정 시 자동 반영)'})
+                    chart.set_x_axis({'name': '날짜'})
+                    chart.set_y_axis({'name': '기온(℃)'})
+
+                    # 차트를 엑셀 시트 J2 위치에 삽입
+                    worksheet.insert_chart('J2', chart)
+
                 b64_excel = base64.b64encode(excel_buffer.getvalue()).decode()
 
-                # 2. 아이콘 파일 읽기 (파일명 excel.png)
+                # 2. 아이콘 파일 읽기 및 버튼 출력 (연구원님 기존 버튼 디자인 유지)
                 with open("excel.png", "rb") as f:
                     img_base64 = base64.b64encode(f.read()).decode()
 
-                # 3. 버튼 디자인 및 출력
-                # 배경색(#f1f8e9)과 테두리(#2e7d32)를 넣어 엑셀 느낌을 냈습니다.
                 btn_html = f'''
                                     <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_excel}" 
                                        download="전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx" 
                                        style="text-decoration: none;">
-                                        <div style="
-                                            display: inline-flex; 
-                                            align-items: center; 
-                                            justify-content: center; 
-                                            padding: 8px 20px; 
-                                            background-color: #ffffff; 
-                                            border: 2px solid #2e7d32; 
-                                            border-radius: 10px; 
-                                            cursor: pointer;
-                                            transition: 0.3s;
-                                            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-                                        ">
+                                        <div style="display: inline-flex; align-items: center; justify-content: center; padding: 8px 20px; 
+                                                    background-color: #ffffff; border: 2px solid #2e7d32; border-radius: 10px; cursor: pointer;">
                                             <img src="data:image/png;base64,{img_base64}" width="25" style="margin-right: 10px;">
-                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">데이터 저장</span>
+                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">데이터 저장 (차트 포함)</span>
                                         </div>
                                     </a>
                                 '''
