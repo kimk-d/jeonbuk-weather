@@ -199,10 +199,30 @@ st.markdown("""
         align-items: center !important;
     }
 
-    /* 델타 텍스트 컨테이너 내의 텍스트에서 첫 글자만 투명하게 */
-    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::first-letter {
-        color: rgba(0,0,0,0) !important; /* 완전 투명 */
-        margin-right: -0.2em !important; /* 부호가 차지하던 자리를 살짝 당겨서 자연스럽게 연결 */
+   /* 4. 전년대비 영역 내부 수직 정렬 (단위 글자 높이 차이 해결) */
+    [data-testid="stMetricDelta"] > div {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important; /* 바닥 대신 중앙 정렬로 변경하여 단위 차이 극복 */
+        gap: 0px !important;
+        line-height: 1 !important;
+    }
+
+    /* 단위(℃, %, mm 등) 때문에 높이가 튀지 않게 강제 고정 */
+    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.2 !important; /* ℃ 기호가 잘리지 않을 정도의 여유 */
+        display: inline-flex !important;
+        align-items: center !important;
+        font-variant-numeric: tabular-nums; /* 숫자 너비 일정하게 고정 */
+    }
+
+    /* 화살표 아이콘 위치 고정 */
+    [data-testid="stMetricDelta"] svg {
+        vertical-align: middle !important;
+        margin-top: -1px !important; /* 아이콘을 아주 살짝 올려서 ℃와 눈높이 맞춤 */
+        flex-shrink: 0 !important;
     }
 
     /* 화살표 아이콘은 건드리지 않음 */
