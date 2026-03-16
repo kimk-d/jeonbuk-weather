@@ -167,13 +167,30 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 2. 메트릭 카드 높이 강제 고정 */
+   /* 2. 메트릭 카드 높이 및 내부 정렬 완전 고정 */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
-        padding: 15px !important;
+        padding: 10px 15px !important;
         border-radius: 12px;
+        
+        /* 높이를 140px로 고정하고 내부 요소를 세로 중앙 정렬 */
         height: 140px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        
+        box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
+    }
+
+    /* 카드 안의 라벨(제목)과 수치 사이의 과도한 여백 제거 */
+    [data-testid="stMetricLabel"] {
+        min-height: auto !important;
+        margin-bottom: 0px !important;
+    }
+
+    [data-testid="stMetricValue"] {
+        line-height: 1.2 !important;
     }
 
     /* 3. [핵심] 부호만 투명화하고 숫자는 유지 (공간 압축 없음) */
