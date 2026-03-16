@@ -145,11 +145,11 @@ def get_weather_data(tm1, tm2):
 # UI 부분
 
 
-col1, col2 = st.columns([0.3, 0.7]) # 로고가 가로로 기니까 공간을 좀 더 줬습니다.
+col1, col2 = st.columns([0.3, 0.7])
 with col1:
-    st.image("logo.png") # 쌀 아이콘 대신 진짜 로고가 들어갑니다!
+    st.image("logo.png")
 with col2:
-    st.markdown("<h1 style='margin-top: 10px;'>기상 분석 시스템</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='margin-top: 10px;'>기상 조회 시스템</h1>", unsafe_allow_html=True)
 
 # [시스템 UI 설정] 영문 툴바 제거 및 요일 한글화
 st.markdown("""
@@ -214,7 +214,7 @@ if start_date <= end_date:
 
             if sel:
                 v_df = final_df[final_df['지역명'].isin(sel)]
-                st.subheader(f" {start_date.date()} ~ {end_date.date()} 기상 분석 보고")
+                st.subheader(f" {start_date.date()} ~ {end_date.date()} 기상 조회")
 
                 # 그래프
                 st.markdown("###  항목별 그래프")
