@@ -335,6 +335,7 @@ if start_date <= end_date:
 
                 st.markdown("---")
 
+
                 # 상세 표 출력
                 st.dataframe(
                     v_df.sort_values(['관측날짜', '지역명'], ascending=[False, True]),
