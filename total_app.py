@@ -251,8 +251,8 @@ if start_date <= end_date:
 
                 # 1. 올해 데이터 계산 (현재 조회된 v_df 기준)
                 cur_avg_temp = v_df['평균기온(℃)'].mean()
-                cur_max_temp = v_df['최고기온(℃)'].max()
-                cur_min_temp = v_df['최저기온(℃)'].min()
+                cur_avg_max = v_df['최고기온(℃)'].mean()  # 기간 내 최고기온들의 평균
+                cur_avg_min = v_df['최저기온(℃)'].mean()  # 기간 내 최저기온들의 평균
                 cur_avg_hum = v_df['평균습도(%)'].mean()
                 cur_sum_sun = v_df['일조시간합(hr)'].sum()
                 cur_sum_rain = v_df['강수량(mm)'].sum()
@@ -305,10 +305,10 @@ if start_date <= end_date:
                     st.metric("평균기온", f"{cur_avg_temp:.1f} ℃",
                               delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
                 with m_col2:
-                    st.metric("최고기온(최대)", f"{cur_max_temp:.1f} ℃",
+                    st.metric("최고기온", f"{cur_max_temp:.1f} ℃",
                               delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
                 with m_col3:
-                    st.metric("최저기온(최소)", f"{cur_min_temp:.1f} ℃",
+                    st.metric("최저기온", f"{cur_min_temp:.1f} ℃",
                               delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
                 with m_col4:
                     st.metric("평균습도", f"{cur_avg_hum:.1f} %",
