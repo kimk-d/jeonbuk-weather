@@ -220,9 +220,6 @@ if start_date <= end_date:
                 st.markdown("###  항목별 그래프")
                 tab1, tab2, tab3, tab4, tab5 = st.tabs(["평균기온", "최고기온", "최저기온", "일조시간", "강수량"])
 
-                # 그래프 항목별 날짜 한글화 적용 버전
-                tab1, tab2, tab3, tab4, tab5 = st.tabs(["평균기온", "최고기온", "최저기온", "일조시간", "강수량"])
-
                 with tab1:
                     fig1 = px.line(v_df, x='관측날짜', y='평균기온(℃)', color='지역명', title='일별 평균기온 추이')
                     fig1.update_xaxes(tickformat="%Y-%m-%d")
