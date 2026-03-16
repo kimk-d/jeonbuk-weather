@@ -180,16 +180,17 @@ st.markdown("""
         box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
     }
 
+    /* [간격 조정 포인트] margin-bottom 수치를 키우면 간격이 넓어집니다 */
     [data-testid="stMetricLabel"] {
         min-height: auto !important;
-        margin-bottom: 0px !important;
+        margin-bottom: 10px !important; /* 0px에서 10px로 수정하여 간격 확보 */
     }
 
     [data-testid="stMetricValue"] {
         line-height: 1.2 !important;
     }
 
-    /* 3. 부호 투명화 및 [색깔 추가] */
+    /* 3. 부호 투명화 및 색깔 설정 (기존 유지) */
     [data-testid="stMetricDelta"] > div {
         display: flex !important;
         align-items: center !important;
