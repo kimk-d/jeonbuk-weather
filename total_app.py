@@ -168,14 +168,21 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
     div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p { display: none; }
 
-    /* 추가: 숫자 앞의 부호(+, -) 숨기기 */
-    [data-testid="stMetricDelta"] svg + div::before { display: none !important; }
+    /* [핵심] 델타 값의 부호(+/-)를 화면에서 보이지 않게 숨기기 */
+    [data-testid="stMetricDelta"] div:first-child::before {
+        display: none !important;
+    }
 
-    /* 추가: 모든 메트릭 카드의 높이를 강제로 똑같이 맞추기 */
+   /* 숫자와 화살표 높이 정렬 및 간격 고정 */
     [data-testid="stMetricDelta"] {
         min-height: 25px !important;
         display: flex !important;
         align-items: center !important;
+    }
+
+    /* 데이터 유무와 상관없이 카드 높이 통일 */
+    [data-testid="stMetric"] {
+        min-height: 110px !important;
     }
     </style>
     """, unsafe_allow_html=True)
