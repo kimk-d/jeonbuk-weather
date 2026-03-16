@@ -247,37 +247,27 @@ if start_date <= end_date:
                     hide_index=True
                 )
 
-
-                buffer = io.BytesIO()
-                with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+                # 1. 엑셀 데이터 변환
+                excel_buffer = io.BytesIO()
+                with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
                     v_df.to_excel(writer, index=False, sheet_name='기상데이터')
+                b64_excel = base64.b64encode(excel_buffer.getvalue()).decode()
 
+                # 2. 아이콘 파일 읽기 (파일명 excel.png 확인!)
+                with open("excel.png", "rb") as f:
+                    img_base64 = base64.b64encode(f.read()).decode()
 
-                    # 1. 엑셀 데이터 생성
-                    buffer = io.BytesIO()
-                    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
-                        v_df.to_excel(writer, index=False, sheet_name='기상데이터')
-                    excel_data = buffer.getvalue()
-                    b64_excel = base64.b64encode(excel_data).decode()
-
-                    # 2. 직접 다운받으신 'excel_icon.png' 파일을 읽어서 버튼으로 만들기
-                    try:
-                        with open("excel.png", "rb") as f:
-                            img_base64 = base64.b64encode(f.read()).decode()
-
-                        # 3. 로고를 클릭하면 다운로드되는 HTML 생성
-                        # 이미지를 중앙 정렬하고 아래에 "Excel 저장" 문구를 넣었습니다.
-                        download_html = f'''
-                                        <div style="display: flex; flex-direction: column; align-items: center; width: 100px; margin-top: 20px;">
-                                            <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_excel}" 
-                                               download="전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx" 
-                                               style="text-decoration: none;">
-                                                <img src="data:image/png;base64,{img_base64}" width="60" style="cursor: pointer;" title="엑셀 파일 다운로드">
-                                            </a>
-                                            <p style="margin-top: 8px; font-weight: bold; color: #2e7d32; font-size: 13px; margin-bottom: 0;">Excel 저장</p>
-                                        </div>
-                                    '''
-                        st.markdown(download_html, unsafe_allow_html=True)
+                # 3. 화면 출력 (들여쓰기 주의: st.dataframe과 세로줄이 맞아야 함)
+                download_html = f'''
+                                    <div style="display: flex; flex-direction: column; align-items: center; width: 100px; margin: 20px 0;">
+                                        <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_excel}" 
+                                           download="전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx">
+                                            <img src="data:image/png;base64,{img_base64}" width="60" style="cursor: pointer;" title="엑셀 저장">
+                                        </a>
+                                        <p style="margin-top: 5px; font-weight: bold; color: #2e7d32; font-size: 13px;">Excel 저장</p>
+                                    </div>
+                                '''
+                st.markdown(download_html, unsafe_allow_html=True)
 
 
             else:
