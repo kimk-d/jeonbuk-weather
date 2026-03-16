@@ -167,7 +167,7 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 2. 메트릭 카드 높이 및 정렬 (기존 140px 유지) */
+   /* 2. 메트릭 카드 높이 및 내부 정렬 (기존 유지) */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
@@ -180,39 +180,43 @@ st.markdown("""
         box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
     }
 
-    [data-testid="stMetricLabel"] { min-height: auto !important; margin-bottom: 0px !important; }
-    [data-testid="stMetricValue"] { line-height: 1.2 !important; }
+    [data-testid="stMetricLabel"] {
+        min-height: auto !important;
+        margin-bottom: 0px !important;
+    }
 
-    /* 3. 델타 영역 배경색 및 글자색 설정 (추가된 부분) */
+    [data-testid="stMetricValue"] {
+        line-height: 1.2 !important;
+    }
 
-    /* 양수: 연한 빨강 배경 + 진한 빨강 글자 */
-    [data-testid="stMetricDelta"]:has(svg[data-testid="stMetricDeltaIcon-Up"]) > div {
-        background-color: #ffebec !important;
-        color: #FF4B4B !important;
-        padding: 2px 8px !important;
-        border-radius: 6px !important;
-        display: inline-flex !important;
+    /* 3. 부호 투명화 및 [색깔 추가] */
+    [data-testid="stMetricDelta"] > div {
+        display: flex !important;
         align-items: center !important;
     }
-    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Up"] { fill: #FF4B4B !important; }
 
-    /* 음수: 연한 파랑 배경 + 진한 파랑 글자 */
-    [data-testid="stMetricDelta"]:has(svg[data-testid="stMetricDeltaIcon-Down"]) > div {
-        background-color: #e8f4ff !important;
-        color: #0068C9 !important;
-        padding: 2px 8px !important;
-        border-radius: 6px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-    }
-    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Down"] { fill: #0068C9 !important; }
-
-    /* 4. 부호 투명화 (기존 유지) */
     [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::first-letter {
         color: rgba(0,0,0,0) !important;
         margin-right: -0.2em !important;
     }
-    [data-testid="stMetricDelta"] svg { vertical-align: middle !important; }
+
+    /* 양수: 빨간색 강제 */
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Up"],
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Up"] + div {
+        color: #FF4B4B !important;
+        fill: #FF4B4B !important;
+    }
+
+    /* 음수: 파란색 강제 */
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Down"],
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Down"] + div {
+        color: #0068C9 !important;
+        fill: #0068C9 !important;
+    }
+
+    [data-testid="stMetricDelta"] svg {
+        vertical-align: middle !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
