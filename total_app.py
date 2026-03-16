@@ -247,27 +247,41 @@ if start_date <= end_date:
                     hide_index=True
                 )
 
+
                 # 1. 엑셀 데이터 변환
                 excel_buffer = io.BytesIO()
                 with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
                     v_df.to_excel(writer, index=False, sheet_name='기상데이터')
                 b64_excel = base64.b64encode(excel_buffer.getvalue()).decode()
 
-                # 2. 아이콘 파일 읽기 (파일명 excel.png 확인!)
+                # 2. 아이콘 파일 읽기 (파일명 excel.png)
                 with open("excel.png", "rb") as f:
                     img_base64 = base64.b64encode(f.read()).decode()
 
-                # 3. 화면 출력 (들여쓰기 주의: st.dataframe과 세로줄이 맞아야 함)
-                download_html = f'''
-                                    <div style="display: flex; flex-direction: column; align-items: center; width: 100px; margin: 20px 0;">
-                                        <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_excel}" 
-                                           download="전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx">
-                                            <img src="data:image/png;base64,{img_base64}" width="60" style="cursor: pointer;" title="엑셀 저장">
-                                        </a>
-                                        <p style="margin-top: 5px; font-weight: bold; color: #2e7d32; font-size: 13px;">Excel 저장</p>
-                                    </div>
+                # 3. 버튼 디자인 및 출력
+                # 배경색(#f1f8e9)과 테두리(#2e7d32)를 넣어 엑셀 느낌을 냈습니다.
+                btn_html = f'''
+                                    <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_excel}" 
+                                       download="전북기상분석_{start_date.strftime('%Y%m%d')}.xlsx" 
+                                       style="text-decoration: none;">
+                                        <div style="
+                                            display: inline-flex; 
+                                            align-items: center; 
+                                            justify-content: center; 
+                                            padding: 8px 20px; 
+                                            background-color: #ffffff; 
+                                            border: 2px solid #2e7d32; 
+                                            border-radius: 10px; 
+                                            cursor: pointer;
+                                            transition: 0.3s;
+                                            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+                                        ">
+                                            <img src="data:image/png;base64,{img_base64}" width="25" style="margin-right: 10px;">
+                                            <span style="color: #2e7d32; font-weight: bold; font-size: 16px;">데이터 저장</span>
+                                        </div>
+                                    </a>
                                 '''
-                st.markdown(download_html, unsafe_allow_html=True)
+                st.markdown(btn_html, unsafe_allow_html=True)
 
 
             else:
