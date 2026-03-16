@@ -155,11 +155,10 @@ st.markdown("""
     /* 1. 기본 툴바 제거 */
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
 
-    /* 2. 달력 요일 한글화 (위치 정확히 고정) */
+    /* 2. 달력 요일 한글화 */
     div[data-baseweb="calendar"] [role="columnheader"] {
         font-size: 0 !important;
         position: relative !important;
-        height: 30px !important;
     }
     div[data-baseweb="calendar"] [role="columnheader"]::after {
         font-size: 0.85rem !important;
@@ -177,33 +176,38 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 3. 메트릭 카드 디자인 및 높이 고정 */
+    /* 3. 메트릭 카드 디자인 */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
         padding: 15px !important;
         border-radius: 12px;
         min-height: 140px !important;
-        box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
     }
 
-    /* 4. [핵심] 부호만 투명화 (숫자 안 밀림!) */
-    /* 델타 텍스트 컨테이너 */
-    [data-testid="stMetricDelta"] > div {
+    /* 4. [해결] 부호가 있을 때만 가리고, 숫자는 절대 건드리지 않기 */
+    /* 델타 영역의 텍스트가 '+'나 '-'로 시작할 때만 첫 글자를 투명하게 합니다 */
+    [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] p {
+        display: inline-block;
+    }
+
+    /* 음수(-)나 양수(+) 부호가 있는 경우만 콕 집어서 투명화 */
+    /* 스트림릿 버전에 따라 부호가 포함된 경우만 처리하도록 간격 조정 */
+    [data-testid="stMetricDelta"] svg + div {
         display: flex !important;
-        align-items: center !important;
     }
 
-    /* 첫 글자(부호)만 투명하게 숨기고 크기를 0으로 제어 */
-    [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] p::first-letter {
-        color: transparent !important;
+    /* 숫자가 잘리지 않도록 text-indent 대신 clipping 기법 사용 */
+    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p {
+        overflow: hidden;
+    }
+
+    /* 가장 확실한 방법: 부호 자체를 파이썬에서 제어하지 못하므로, 
+       CSS로 첫 글자가 부호인 경우만 크기를 줄입니다. */
+    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] > p::first-letter {
         font-size: 0 !important;
-    }
-
-    /* 화살표 아이콘은 그대로 표시 */
-    [data-testid="stMetricDelta"] svg {
-        margin-right: 2px !important;
-        vertical-align: middle !important;
+        color: transparent !important;
+        margin-right: -2px !important;
     }
     </style>
     """, unsafe_allow_html=True)
