@@ -247,6 +247,31 @@ if start_date <= end_date:
                     fig5.update_xaxes(tickformat="%Y-%m-%d")
                     st.plotly_chart(fig5, use_container_width=True)
 
+                st.markdown(f"### 📋 {sel[0]} 등 선택 지역 요약 (평균)")
+
+                # 수치 계산 (선택된 지역 전체 데이터 대상)
+                avg_temp = v_df['평균기온(℃)'].mean()
+                max_temp = v_df['최고기온(℃)'].max()
+                min_temp = v_df['최저기온(℃)'].min()
+                sum_rain = v_df['강수량(mm)'].sum()
+                avg_hum = v_df['평균습도(%)'].mean()
+
+                # 카드 레이아웃 배치
+                m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
+
+                with m_col1:
+                    st.metric("평균 기온", f"{avg_temp:.1f} ℃")
+                with m_col2:
+                    st.metric("최고 기온(최대)", f"{max_temp:.1f} ℃", delta=f"{max_temp - avg_temp:.1f} ℃",
+                              delta_color="inverse")
+                with m_col3:
+                    st.metric("최저 기온(최소)", f"{min_temp:.1f} ℃")
+                with m_col4:
+                    st.metric("누적 강수량", f"{sum_rain:.1f} mm")
+                with m_col5:
+                    st.metric("평균 습도", f"{avg_hum:.1f} %")
+
+                st.markdown("---")  # 구분선
                 # 상세 표 출력
                 st.dataframe(
                     v_df.sort_values(['관측날짜', '지역명'], ascending=[False, True]),
