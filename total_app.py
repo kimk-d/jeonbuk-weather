@@ -152,7 +152,7 @@ with col2:
 
 st.markdown("""
     <style>
-    /* 1. 기본 툴바 및 요일 설정 (기존과 동일) */
+    /* 1. 기본 툴바 및 요일 설정 (기존 유지) */
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
     div[data-baseweb="calendar"] [role="columnheader"] { font-size: 0 !important; position: relative !important; }
     div[data-baseweb="calendar"] [role="columnheader"]::after {
@@ -167,23 +167,19 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-   /* 2. 메트릭 카드 높이 및 내부 정렬 완전 고정 */
+   /* 2. 메트릭 카드 높이 및 내부 정렬 (기존 유지) */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
         padding: 10px 15px !important;
         border-radius: 12px;
-        
-        /* 높이를 140px로 고정하고 내부 요소를 세로 중앙 정렬 */
         height: 140px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
-        
         box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
     }
 
-    /* 카드 안의 라벨(제목)과 수치 사이의 과도한 여백 제거 */
     [data-testid="stMetricLabel"] {
         min-height: auto !important;
         margin-bottom: 0px !important;
@@ -193,19 +189,31 @@ st.markdown("""
         line-height: 1.2 !important;
     }
 
-    /* 3. [핵심] 부호만 투명화하고 숫자는 유지 (공간 압축 없음) */
+    /* 3. 부호 투명화 및 [색깔 추가] */
     [data-testid="stMetricDelta"] > div {
         display: flex !important;
         align-items: center !important;
     }
 
-    /* 델타 텍스트 컨테이너 내의 텍스트에서 첫 글자만 투명하게 */
     [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::first-letter {
-        color: rgba(0,0,0,0) !important; /* 완전 투명 */
-        margin-right: -0.2em !important; /* 부호가 차지하던 자리를 살짝 당겨서 자연스럽게 연결 */
+        color: rgba(0,0,0,0) !important;
+        margin-right: -0.2em !important;
     }
 
-    /* 화살표 아이콘은 건드리지 않음 */
+    /* 양수: 빨간색 강제 */
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Up"],
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Up"] + div {
+        color: #FF4B4B !important;
+        fill: #FF4B4B !important;
+    }
+
+    /* 음수: 파란색 강제 */
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Down"],
+    [data-testid="stMetricDelta"] svg[data-testid="stMetricDeltaIcon-Down"] + div {
+        color: #0068C9 !important;
+        fill: #0068C9 !important;
+    }
+
     [data-testid="stMetricDelta"] svg {
         vertical-align: middle !important;
     }
