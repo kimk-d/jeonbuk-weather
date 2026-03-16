@@ -185,7 +185,7 @@ st.markdown("""
     /* 델타 컨테이너에서 첫 번째 글자(부호)만 왼쪽 밖으로 밀어내서 숨깁니다 */
     [data-testid="stMetricDelta"] > div {
         overflow: hidden !important;
-        text-indent: -0.7em !important; /* 부호(+/-) 길이만큼 왼쪽으로 밀기 */
+        text-indent: -0.4em !important; /* 부호(+/-) 길이만큼 왼쪽으로 밀기 */
         white-space: nowrap !important;
     }
 
