@@ -385,7 +385,7 @@ if start_date <= end_date:
                                         </div>
                                     </a>
                                 '''
-                st.markdown(btn_html,"""
+                st.markdown("""
     <style>
     /* 1. 기호(+, -) 숨기고 화살표와 숫자만 표시 */
     [data-testid="stMetricDelta"] svg + div::before { display: none !important; }
