@@ -153,11 +153,13 @@ with col2:
 
 st.markdown("""
     <style>
+    /* 1. 기본 툴바 제거 */
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
-    div[data-baseweb="calendar"] [role="columnheader"] { color: transparent !important; position: relative !important; }
+
+    /* 2. 달력 요일 한글화 (더 확실한 선택자 적용) */
+    div[data-baseweb="calendar"] [role="columnheader"] span { display: none !important; }
     div[data-baseweb="calendar"] [role="columnheader"]::after {
-        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        visibility: visible !important; font-size: 0.8rem; font-weight: bold;
+        font-size: 0.8rem; font-weight: bold; visibility: visible !important;
     }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(1)::after { content: "일"; color: red !important; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(2)::after { content: "월"; color: white; }
@@ -166,23 +168,44 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(5)::after { content: "목"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
-    div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p { display: none; }
 
-    /* [핵심] 델타 값의 부호(+/-)를 화면에서 보이지 않게 숨기기 */
-    [data-testid="stMetricDelta"] div:first-child::before {
-        display: none !important;
-    }
-
-   /* 숫자와 화살표 높이 정렬 및 간격 고정 */
-    [data-testid="stMetricDelta"] {
-        min-height: 25px !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-
-    /* 데이터 유무와 상관없이 카드 높이 통일 */
+    /* 3. 메트릭 카드 전체 높이 고정 (정렬 문제 해결) */
     [data-testid="stMetric"] {
-        min-height: 110px !important;
+        background-color: #f9f9f9;
+        border: 1px solid #eeeeee;
+        padding: 15px !important;
+        border-radius: 10px;
+        min-height: 130px !important; /* 높이를 넉넉히 고정해서 줄 맞춤 */
+    }
+
+    /* 4. [중요] 부호(+/-) 지우기 및 화살표 유지 */
+    /* 델타 텍스트 내부의 부호 기호를 강제로 투명하게 만들거나 숨깁니다 */
+    [data-testid="stMetricDelta"] div {
+        font-size: 0 !important; /* 전체 글자를 숨기고 */
+    }
+    [data-testid="stMetricDelta"] div::after {
+        content: attr(aria-label); /* aria-label에 저장된 수치를 가져오거나 */
+        font-size: 0.9rem !important; /* 다시 글자 크기 복구 */
+        display: block;
+    }
+    /* 더 쉬운 방법: 부호가 포함된 첫 번째 텍스트 노드만 가리기 */
+    [data-testid="stMetricDelta"] > div {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    /* 이 코드가 핵심입니다: 화살표는 살리고 숫자 앞의 부호만 밀어버립니다 */
+    [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] {
+        display: none !important; 
+    }
+
+    /* 숫자에서 부호 제거를 위한 특수 CSS */
+    [data-testid="stMetricDelta"] > div:last-child {
+        display: flex;
+        align-items: center;
+    }
+    [data-testid="stMetricDelta"] > div:last-child::first-letter {
+        font-size: 0 !important;
+        color: transparent !important;
     }
     </style>
     """, unsafe_allow_html=True)
