@@ -151,7 +151,6 @@ with col1:
 with col2:
     st.markdown("<h1 style='margin-top: 10px;'>기상 조회 시스템</h1>", unsafe_allow_html=True)
 
-# [시스템 UI 설정] 영문 툴바 제거 및 요일 한글화
 st.markdown("""
     <style>
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
@@ -168,6 +167,16 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
     div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p { display: none; }
+
+    /* 추가: 숫자 앞의 부호(+, -) 숨기기 */
+    [data-testid="stMetricDelta"] svg + div::before { display: none !important; }
+
+    /* 추가: 모든 메트릭 카드의 높이를 강제로 똑같이 맞추기 */
+    [data-testid="stMetricDelta"] {
+        min-height: 25px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -385,19 +394,7 @@ if start_date <= end_date:
                                         </div>
                                     </a>
                                 '''
-                st.markdown("""
-    <style>
-    /* 1. 기호(+, -) 숨기고 화살표와 숫자만 표시 */
-    [data-testid="stMetricDelta"] svg + div::before { display: none !important; }
-    
-    /* 2. 모든 메트릭의 높이를 강제로 통일 (데이터 유무 상관없이 아래쪽 간격 확보) */
-    [data-testid="stMetricDelta"] {
-        min-height: 25px; 
-        display: flex;
-        align-items: center;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+                st.markdown(btn_html, unsafe_allow_html=True)
 
 
             else:
