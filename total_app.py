@@ -291,34 +291,42 @@ if start_date <= end_date:
                     # 윤년(2월 29일) 등 예외 발생 시 방어 로직
                     diff_temp = diff_hum = diff_sun = diff_rain = None
 
-                # 3. 카드 레이아웃 배치
                 m_col1, m_col2, m_col3, m_col4, m_col5, m_col6 = st.columns(6)
 
 
                 def format_diff(val, unit):
-                    if val is None: return "데이터 없음"
+                    if val is None or pd.isna(val): return None  # 데이터 없으면 delta 표시 안함
                     sign = "+" if val > 0 else ""
                     return f"{sign}{val:.1f} {unit}"
 
 
+                # 작년 대비 계산 (최고/최저 평균 기준)
+                if last_df_raw is not None and not last_v_df.empty:
+                    last_avg_max = last_v_df['최고기온'].mean()
+                    last_avg_min = last_v_df['최저기온'].mean()
+                    diff_max = cur_avg_max - last_avg_max
+                    diff_min = cur_avg_min - last_avg_min
+                else:
+                    diff_max = diff_min = None
+
                 with m_col1:
                     st.metric("평균기온", f"{cur_avg_temp:.1f} ℃",
-                              delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
+                              delta=format_diff(diff_temp, "℃"))
                 with m_col2:
-                    st.metric("최고기온", f"{cur_max_temp:.1f} ℃",
-                              delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
+                    st.metric("최고기온(평균)", f"{cur_avg_max:.1f} ℃",
+                              delta=format_diff(diff_max, "℃"))
                 with m_col3:
-                    st.metric("최저기온", f"{cur_min_temp:.1f} ℃",
-                              delta=format_diff(diff_temp, "℃") if diff_temp is not None else None)
+                    st.metric("최저기온(평균)", f"{cur_avg_min:.1f} ℃",
+                              delta=format_diff(diff_min, "℃"))
                 with m_col4:
                     st.metric("평균습도", f"{cur_avg_hum:.1f} %",
-                              delta=format_diff(diff_hum, "%") if diff_hum is not None else None)
+                              delta=format_diff(diff_hum, "%"))
                 with m_col5:
                     st.metric("일조시간합", f"{cur_sum_sun:.1f} hr",
-                              delta=format_diff(diff_sun, "hr") if diff_sun is not None else None)
+                              delta=format_diff(diff_sun, "hr"))
                 with m_col6:
                     st.metric("누적강수량", f"{cur_sum_rain:.1f} mm",
-                              delta=format_diff(diff_rain, "mm") if diff_rain is not None else None)
+                              delta=format_diff(diff_rain, "mm"))
 
                 st.markdown("---")
 
