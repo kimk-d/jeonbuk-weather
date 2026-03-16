@@ -152,22 +152,12 @@ with col2:
 
 st.markdown("""
     <style>
-    /* 1. 기본 툴바 제거 */
+    /* 1. 기본 툴바 및 요일 설정 (기존과 동일) */
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
-
-    /* 2. 달력 요일 한글화 (위치 정중앙 고정) */
-    div[data-baseweb="calendar"] [role="columnheader"] {
-        font-size: 0 !important;
-        position: relative !important;
-        height: 30px !important;
-    }
+    div[data-baseweb="calendar"] [role="columnheader"] { font-size: 0 !important; position: relative !important; }
     div[data-baseweb="calendar"] [role="columnheader"]::after {
-        font-size: 0.85rem !important;
-        font-weight: bold !important;
-        visibility: visible !important;
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
+        font-size: 0.85rem !important; font-weight: bold !important; visibility: visible !important;
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(1)::after { content: "일"; color: #FF4B4B !important; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(2)::after { content: "월"; color: white; }
@@ -177,28 +167,30 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 3. 메트릭 카드 전체 높이 및 패딩 고정 (이게 높이를 맞춥니다) */
+    /* 2. 메트릭 카드 높이 강제 고정 */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
         padding: 15px !important;
         border-radius: 12px;
-        height: 140px !important; /* min-height 대신 height로 높이 강제 통일 */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        height: 140px !important;
     }
 
-    /* 4. 부호 숨기기 해제 및 델타 영역 정렬 원복 */
+    /* 3. [핵심] 부호만 투명화하고 숫자는 유지 (공간 압축 없음) */
     [data-testid="stMetricDelta"] > div {
-        display: inline-flex !important;
+        display: flex !important;
         align-items: center !important;
     }
 
-    /* 기존에 부호 가리던 가상 요소나 투명 처리를 모두 초기화합니다 */
+    /* 델타 텍스트 컨테이너 내의 텍스트에서 첫 글자만 투명하게 */
     [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::first-letter {
-        color: inherit !important;
-        font-size: inherit !important;
+        color: rgba(0,0,0,0) !important; /* 완전 투명 */
+        margin-right: -0.4em !important; /* 부호가 차지하던 자리를 살짝 당겨서 자연스럽게 연결 */
+    }
+
+    /* 화살표 아이콘은 건드리지 않음 */
+    [data-testid="stMetricDelta"] svg {
+        vertical-align: middle !important;
     }
     </style>
     """, unsafe_allow_html=True)
