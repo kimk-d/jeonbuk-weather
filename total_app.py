@@ -199,10 +199,26 @@ st.markdown("""
         align-items: center !important;
     }
 
-    /* 델타 텍스트 컨테이너 내의 텍스트에서 첫 글자만 투명하게 */
-    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::first-letter {
-        color: rgba(0,0,0,0) !important; /* 완전 투명 */
-        margin-right: -0.2em !important; /* 부호가 차지하던 자리를 살짝 당겨서 자연스럽게 연결 */
+    /* 4. 델타(전년대비) 영역 내부 수직 정렬 칼같이 맞추기 */
+    [data-testid="stMetricDelta"] > div {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: baseline !important; /* 텍스트 바닥 기준으로 아이콘과 정렬 */
+        gap: 2px !important;
+    }
+
+    /* 화살표 아이콘 위치 미세 조정 */
+    [data-testid="stMetricDelta"] svg {
+        position: relative !important;
+        top: 2px !important; /* 텍스트 높이에 맞춰 아이콘을 살짝 내림 */
+        flex-shrink: 0 !important;
+    }
+
+    /* 델타 텍스트 간격 고정 */
+    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p {
+        margin: 0 !important;
+        line-height: 1 !important;
+        display: inline-block !important;
     }
 
     /* 화살표 아이콘은 건드리지 않음 */
