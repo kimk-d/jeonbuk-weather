@@ -155,10 +155,11 @@ st.markdown("""
     /* 1. 기본 툴바 제거 */
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
 
-    /* 2. 달력 요일 한글화 */
+    /* 2. 달력 요일 한글화 (위치 정중앙 고정) */
     div[data-baseweb="calendar"] [role="columnheader"] {
         font-size: 0 !important;
         position: relative !important;
+        height: 30px !important;
     }
     div[data-baseweb="calendar"] [role="columnheader"]::after {
         font-size: 0.85rem !important;
@@ -176,34 +177,28 @@ st.markdown("""
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 3. 메트릭 카드 디자인 */
+    /* 3. 메트릭 카드 전체 높이 및 패딩 고정 (이게 높이를 맞춥니다) */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
         padding: 15px !important;
         border-radius: 12px;
-        min-height: 140px !important;
+        height: 140px !important; /* min-height 대신 height로 높이 강제 통일 */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
-    /* 4. [완전해결] 부호 공간은 유지하되 색상만 투명화 */
-    [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] p {
-        display: flex !important;
+    /* 4. 부호 숨기기 해제 및 델타 영역 정렬 원복 */
+    [data-testid="stMetricDelta"] > div {
+        display: inline-flex !important;
         align-items: center !important;
-        letter-spacing: -0.5px; /* 숫자 간격 미세 조정 */
     }
 
-    /* 첫 글자(부호)의 색상만 투명하게 하고, 크기는 아주 작게 유지하여 잘림 방지 */
-    [data-testid="stMetricDelta"] div[data-testid="stMarkdownContainer"] p::first-letter {
-        color: transparent !important;
-        font-size: 0.1px !important; /* 0이 아닌 최소값을 주어 레이아웃 붕괴 방지 */
-        margin-right: -4px !important; /* 부호가 차지하던 빈 공간만큼 숫자를 당김 */
-    }
-
-    /* 화살표 위치 정렬 */
-    [data-testid="stMetricDelta"] svg {
-        margin-right: 2px !important;
-        vertical-align: middle !important;
-        flex-shrink: 0;
+    /* 기존에 부호 가리던 가상 요소나 투명 처리를 모두 초기화합니다 */
+    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::first-letter {
+        color: inherit !important;
+        font-size: inherit !important;
     }
     </style>
     """, unsafe_allow_html=True)
