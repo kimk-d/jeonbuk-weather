@@ -385,7 +385,19 @@ if start_date <= end_date:
                                         </div>
                                     </a>
                                 '''
-                st.markdown(btn_html, unsafe_allow_html=True)
+                st.markdown(btn_html,"""
+    <style>
+    /* 1. 기호(+, -) 숨기고 화살표와 숫자만 표시 */
+    [data-testid="stMetricDelta"] svg + div::before { display: none !important; }
+    
+    /* 2. 모든 메트릭의 높이를 강제로 통일 (데이터 유무 상관없이 아래쪽 간격 확보) */
+    [data-testid="stMetricDelta"] {
+        min-height: 25px; 
+        display: flex;
+        align-items: center;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 
             else:
