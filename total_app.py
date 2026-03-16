@@ -155,57 +155,44 @@ st.markdown("""
     /* 1. 기본 툴바 제거 */
     [data-testid="stDataFrameToolbar"], .modebar { display: none !important; }
 
-    /* 2. 달력 요일 한글화 (기존 텍스트를 0으로 만들고 after로 강제 삽입) */
+    /* 2. 달력 요일 한글화 (기존 글자 투명화 후 after로 강제 삽입) */
     div[data-baseweb="calendar"] [role="columnheader"] {
-        font-size: 0 !important;
+        color: transparent !important;
     }
     div[data-baseweb="calendar"] [role="columnheader"]::after {
-        font-size: 0.9rem !important;
-        font-weight: bold !important;
-        visibility: visible !important;
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        visibility: visible !important; font-size: 0.8rem; font-weight: bold; color: white;
     }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(1)::after { content: "일"; color: red !important; }
-    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(2)::after { content: "월"; color: white !important; }
-    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(3)::after { content: "화"; color: white !important; }
-    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(4)::after { content: "수"; color: white !important; }
-    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(5)::after { content: "목"; color: white !important; }
-    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; color: white !important; }
+    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(2)::after { content: "월"; }
+    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(3)::after { content: "화"; }
+    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(4)::after { content: "수"; }
+    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(5)::after { content: "목"; }
+    div[data-baseweb="calendar"] [role="columnheader"]:nth-child(6)::after { content: "금"; }
     div[data-baseweb="calendar"] [role="columnheader"]:nth-child(7)::after { content: "토"; color: #00bfff !important; }
 
-    /* 3. 메트릭 카드 전체 높이 및 디자인 통일 */
+    /* 3. 메트릭 카드 전체 높이 및 디자인 고정 */
     [data-testid="stMetric"] {
         background-color: #ffffff;
         border: 1px solid #e0e0e0;
         padding: 15px !important;
         border-radius: 12px;
-        min-height: 140px !important; /* 높이 강제 고정 */
+        min-height: 140px !important;
         box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
     }
 
-    /* 4. 부호(+/-) 제거 로직: 델타 값의 첫 번째 글자(부호)를 투명하게 처리 */
+    /* 4. [핵심] 부호만 가리고 숫자는 살리기 */
+    /* 델타 컨테이너에서 첫 번째 글자(부호)만 왼쪽 밖으로 밀어내서 숨깁니다 */
     [data-testid="stMetricDelta"] > div {
-        display: flex !important;
-        align-items: center !important;
+        overflow: hidden !important;
+        text-indent: -0.7em !important; /* 부호(+/-) 길이만큼 왼쪽으로 밀기 */
+        white-space: nowrap !important;
     }
 
-    /* 델타 텍스트에서 부호(+/-)만 콕 집어서 가리기 */
-    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p {
-        font-size: 0 !important;
-    }
-    [data-testid="stMetricDelta"] [data-testid="stMarkdownContainer"] p::after {
-        content: attr(data-testid); /* 임시 처리 */
-        display: none;
-    }
-
-    /* 가장 확실한 방법: 숫자를 감싸는 컨테이너의 첫 글자를 날림 */
-    [data-testid="stMetricDelta"] div:last-child::first-letter {
-        font-size: 0 !important;
-        color: transparent !important;
-    }
-
-    /* 화살표 위치와 숫자 간격 정렬 */
+    /* 화살표 아이콘은 밀리지 않게 고정 */
     [data-testid="stMetricDelta"] svg {
-        margin-right: -2px !important;
+        margin-left: 0.7em !important; 
+        margin-right: 2px !important;
     }
     </style>
     """, unsafe_allow_html=True)
